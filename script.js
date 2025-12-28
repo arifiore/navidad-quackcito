@@ -167,7 +167,7 @@ function initAtrapa() {
         
         // DIBUJAR JUGADOR (Barra pequeña de 20px)
         g.fillStyle = varColor('--cyan');
-        g.fillRect(pX - 10, 270, 20, 5); 
+        g.fillRect(pX - 10, 270, 35, 5); 
 
         // Probabilidad de aparición (3%)
         if(Math.random() < 0.03) hearts.push({x: Math.random() * 380, y: 0});
@@ -175,7 +175,7 @@ function initAtrapa() {
         // RECORRER CORAZONES
         for (let i = hearts.length - 1; i >= 0; i--) {
             let h = hearts[i];
-            h.y += 5.5; // VELOCIDAD RÁPIDA
+            h.y += 5; // VELOCIDAD RÁPIDA
             
             g.font = "20px Arial";
             g.fillText('❤', h.x, h.y);
