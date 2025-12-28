@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Navidad Quackcito</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="snowCanvas"></canvas>
+    
+    <audio id="bgMusic" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="main-container">
+        <header>
+            <h1 class="neon-text">FELIZ NAVIDAD Quackcito <span class="heart-pulse">❤</span></h1>
+            <div id="counter" class="neon-border"></div>
+            <button id="musicBtn" onclick="toggleMusic()">🔈 Play Music</button>
+        </header>
+
+        <div class="scene">
+            <div class="star" id="mainStar" onclick="finalSurprise()">★</div>
+            
+            <div class="trunk"></div>
+
+            <div class="tree">
+                <div class="layer l1"></div>
+                <div class="layer l2"></div>
+                <div class="layer l3"></div>
+                
+                <div class="ornament b1" onclick="msg('Entre millones de estrellas, brillaste tú. Eres mi mejor casualidad.')"></div>
+                <div class="ornament b2" onclick="msg('Este es mi deseo: mil navidades más caminando de tu mano.')"></div>
+                <div class="ornament b3" onclick="msg('Te quiero más que ayer, pero menos que mañana. Eres mi constante.')"></div>
+                <div class="ornament b4" onclick="msg('Donde estás tú, es Navidad. Gracias por ser mi hogar.')"></div>
+                <div class="ornament b5" onclick="msg('Eres el código que hace que mi mundo funcione perfecto y sin errores.')"></div>
+                <div class="ornament b6" onclick="msg('Nuestra historia es mi regalo favorito todos los días desde el 2019.')"></div>
+                <div class="ornament b7" onclick="msg('Eres la luz neón que ilumina mis días más oscuros.')"></div>
+                <div class="ornament b8" onclick="msg('Si pudiera elegir de nuevo, te elegiría a ti en todas mis vidas.')"></div>
+            </div>
+
+            <div class="gifts-base">
+                <div class="gift g1" onclick="openGame('jardin')"><span>Sorpresa 1</span></div>
+                <div class="gift g2" onclick="openGame('atrapa')"><span>Sorpresa 2</span></div>
+                <div class="gift g3" onclick="openGame('stats')"><span>Sorpresa 3</span></div>
+                <div class="gift g4" onclick="finalSurprise()"><span>???</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modal-container">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
