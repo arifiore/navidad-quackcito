@@ -175,7 +175,7 @@ function initAtrapa() {
         // RECORRER CORAZONES
         for (let i = hearts.length - 1; i >= 0; i--) {
             let h = hearts[i];
-            h.y += 7; // VELOCIDAD RÁPIDA
+            h.y += 5.5; // VELOCIDAD RÁPIDA
             
             g.font = "20px Arial";
             g.fillText('❤', h.x, h.y);
@@ -257,7 +257,7 @@ function finalSurprise() {
             <h1 style="color:var(--cyan); font-size:3rem">★ EL UNIVERSO QUACKCITO ★</h1>
             <p style="font-size:1.5rem">Mira hacia arriba... así de grande es lo que siento.</p>
             <div class="heart-pulse" style="font-size:5rem">🌌</div>
-            <p>Has abierto todos los regalos. Pero el mejor regalo es tenerte cada mañana desde el 2019.</p>
+            <p>Has abierto todos los regalos. Pero el mejor regalo es tenerte cada mañana desde el 2024.</p>
             <h2 style="color:var(--pink)">¡FELIZ NAVIDAD, MI QUACKCITO!</h2>
         </div>
     `);
