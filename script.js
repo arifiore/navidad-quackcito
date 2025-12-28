@@ -158,59 +158,91 @@ function initAtrapa() {
     const g = c.getContext('2d');
     let score = 0;
     let hearts = [];
-    let pX = 150;
+    let pX = 200; // Iniciar al centro
 
-    c.onmousemove = (e) => pX = e.clientX - c.getBoundingClientRect().left;
+    // Función auxiliar para leer colores del CSS
+    const getCol = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+    c.onmousemove = (e) => {
+        const rect = c.getBoundingClientRect();
+        pX = e.clientX - rect.left;
+    };
 
     function game() {
-        g.clearRect(0,0,400,300);
+        // Fondo con rastro ligero para efecto neón
+        g.fillStyle = "rgba(0, 0, 0, 0.3)";
+        g.fillRect(0, 0, c.width, c.height);
         
-        // DIBUJAR JUGADOR (Barra pequeña de 20px)
-        g.fillStyle = varColor('--cyan');
-        g.fillRect(pX - 10, 270, 35, 5); 
+        // 1. DIBUJAR JUGADOR (Barra de 80px centrada en el mouse)
+        g.fillStyle = getCol('--cyan');
+        g.shadowBlur = 15;
+        g.shadowColor = getCol('--cyan');
+        g.fillRect(pX - 40, 280, 80, 8); 
 
-        // Probabilidad de aparición (3%)
-        if(Math.random() < 0.03) hearts.push({x: Math.random() * 380, y: 0});
+        // 2. GENERAR CORAZONES (Probabilidad del 4% para que sea intenso)
+        if(Math.random() < 0.04) {
+            hearts.push({ x: Math.random() * (c.width - 20) + 10, y: 0 });
+        }
 
-        // RECORRER CORAZONES
+        // 3. RECORRER CORAZONES
         for (let i = hearts.length - 1; i >= 0; i--) {
             let h = hearts[i];
-            h.y += 5; // VELOCIDAD RÁPIDA
+            h.y += 4; // VELOCIDAD (Más alto = más difícil)
             
+            // Dibujar Corazón con Brillo
+            g.fillStyle = getCol('--pink');
+            g.shadowColor = getCol('--pink');
             g.font = "20px Arial";
-            g.fillText('❤', h.x, h.y);
+            g.fillText('❤', h.x - 10, h.y);
 
-            // 1. ¿LO ATRAPÓ? (Colisión con la barra de 20px)
-            if(h.y >= 270 && h.y <= 280 && h.x > pX - 15 && h.x < pX + 15) {
-                hearts.splice(i, 1);
-                score++;
-                continue; // Pasa al siguiente corazón
+            // DETECTAR COLISIÓN
+            // Si el corazón llega a la altura de la barra (280) 
+            // y está dentro del rango de los 80px de la barra (pX-40 a pX+40)
+            if(h.y >= 275 && h.y <= 290) {
+                if(h.x > pX - 45 && h.x < pX + 45) {
+                    hearts.splice(i, 1);
+                    score++;
+                    continue;
+                }
             }
 
-            // 2. ¿SE LE ESCAPÓ? (Pasó el límite inferior)
+            // DETECTAR PÉRDIDA
             if(h.y > 300) { 
                 hearts.splice(i, 1);
-                score = 0; // ¡PENALIZACIÓN! Reinicia todo
+                // Solo penaliza si no ha ganado ya
+                if(score < 20) {
+                    score = 0; // REINICIO FATAL
+                    // Efecto visual de error
+                    g.fillStyle = "rgba(255, 0, 0, 0.5)";
+                    g.fillRect(0, 0, c.width, c.height);
+                }
             }
         }
 
-        // TEXTO DE PUNTAJE
+        // 4. TEXTO DE PUNTAJE (Estilo neón)
+        g.shadowBlur = 0;
         g.fillStyle = "white";
-        g.font = "14px Arial";
-        g.fillText(`Amor: ${score}/20`, 10, 25);
+        g.font = "bold 16px Orbitron, sans-serif";
+        g.fillText(`AMOR RECOLECTADO: ${score}/20`, 15, 30);
+        
         if(score === 0) {
-            g.fillStyle = "red";
-            g.fillText("¡No dejes caer ninguno!", 10, 45);
+            g.fillStyle = getCol('--pink');
+            g.font = "12px Orbitron";
+            g.fillText("¡NO DEJES CAER NINGUNO!", 15, 50);
         }
 
-        // CONDICIÓN DE VICTORIA
+        // 5. CONDICIÓN DE VICTORIA
         if(score >= 20) {
-            showHeartReward();
-            return; // Detiene el juego y muestra la foto
+            cancelAnimationFrame(gameLoopId);
+            setTimeout(showHeartReward, 300); // Función que muestra la foto/mensaje
+            return;
         }
         
         gameLoopId = requestAnimationFrame(game);
     }
+    
+    // Iniciar bucle
+    if(gameLoopId) cancelAnimationFrame(gameLoopId);
     game();
 }
 
